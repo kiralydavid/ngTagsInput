@@ -325,6 +325,9 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
                 input: {
                     keydown: function($event) {
                         events.trigger('input-keydown', $event);
+                    },					
+					keypress: function($event) {
+                        events.trigger('input-keypress', $event);
                     },
                     focus: function() {
                         if (scope.hasFocus) {
@@ -452,6 +455,16 @@ tagsInput.directive('tagsInput', function($timeout, $document, $window, $q, tags
                     if (shouldAdd || shouldSelect || shouldRemove || shouldEditLastTag) {
                         event.preventDefault();
                     }
+                })
+				.on('input-keypress', function(event) {
+                    var key = event.keyCode;
+
+                    if (key !== 59) {
+                        return;
+                    }
+					
+					tagList.addText(scope.newTag.text());
+					event.preventDefault();
                 })
                 .on('input-paste', function(event) {
                     if (options.addOnPaste) {
